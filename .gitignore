@@ -1,4 +1,2 @@
-star-assault/bin
-star-assault-android/bin
-star-assault-android/gen
-star-assault-desktop/bin
+bin
+.settings

@@ -5,7 +5,7 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/PlatformJump"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="D:/programmieren/Projects/Git/star-assault-part4/physicstest/PhysicsEngineTest/libs/gdx.jar" sourcepath="/PhysicsEngineTest/libs/gdx-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/PlatformJump/libs/gdx.jar" sourcepath="/PlatformJump/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>

@@ -1,6 +1,6 @@
 package at.d4m.platformjump;
 
-import at.d4m.platformjump.screens.GameScreen;
+import at.d4m.platformjump.screens.MenuScreen;
 
 import com.badlogic.gdx.Game;
 
@@ -8,7 +8,7 @@ public class PhysicsTest extends Game {
 
 	@Override
 	public void create() {
-		setScreen(new GameScreen(this));
+		setScreen(new MenuScreen(this));
 	}
 
 	@Override

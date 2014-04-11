@@ -2,6 +2,8 @@ package at.d4m.platformjump.world;
 
 import java.util.LinkedList;
 
+import at.d4m.platformjump.Constants;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,10 +15,13 @@ public class PlatformEngine {
 
 	private World world;
 	private LinkedList<Platform> platforms;
+	private LinkedList<Body> createdPlatforms;
 	private int xPos = 0;
 
 	public PlatformEngine(World w) {
 		this.world = w;
+
+		createdPlatforms = new LinkedList<>();
 
 		setUpQueue();
 
@@ -43,20 +48,26 @@ public class PlatformEngine {
 
 	private void addToQueue() {
 		for (int i = 0; i < Constants.PLATFORM_FILL_WHEN_BUFFER_EMPTY; i++) {
-			platforms.add(new Platform(MathUtils.random(Constants.MIN_HEIGHT, Constants.MAX_HEIGHT)));
+			platforms.add(new Platform(MathUtils.random(Constants.MIN_HEIGHT,
+					Constants.MAX_HEIGHT)));
 		}
 	}
 
 	private void setUpGround() {
 		for (int i = 0; i < Constants.PLATFORM_BUFFER; i++) {
-			addNext();
+			addNextPlatform();
 		}
 	}
 
-	public void addNext() {
+	public void addNextPlatform() {
 		Platform plat = getNextPlatform();
 		addPlatform(plat.height, xPos);
 		xPos += Constants.DISTANCE_BETWEEN;
+	}
+
+	public void removeFirstPlatform() {
+		if (createdPlatforms != null & createdPlatforms.size() > 0)
+			world.destroyBody(createdPlatforms.poll());
 	}
 
 	private void addPlatform(float height, float xposition) {
@@ -67,6 +78,9 @@ public class PlatformEngine {
 
 		// Create a body from the defintion and add it to the world
 		Body groundBody = world.createBody(groundBodyDef);
+
+		// insert body into created platforms queue
+		createdPlatforms.add(groundBody);
 
 		// Create a polygon shape
 		PolygonShape groundBox = new PolygonShape();

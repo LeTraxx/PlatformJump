@@ -1,7 +1,5 @@
 package at.d4m.platformjump;
 
-import at.d4m.platformjump.PhysicsTest;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 

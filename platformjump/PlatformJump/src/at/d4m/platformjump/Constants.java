@@ -1,4 +1,4 @@
-package at.d4m.platformjump.world;
+package at.d4m.platformjump;
 
 import com.badlogic.gdx.Input.Keys;
 
@@ -21,5 +21,6 @@ public final class Constants {
 	public static final int DISTANCE_BETWEEN = 20;
 	public static final float MAX_HEIGHT = 19f;
 	public static final float MIN_HEIGHT = 11f;
+	public static final int BOB_OFFSET_FROM_LEFT = 25;
 
 }

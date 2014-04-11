@@ -1,5 +1,7 @@
 package at.d4m.platformjump.world;
 
+import at.d4m.platformjump.Constants;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -75,7 +77,9 @@ public class PhysicsWorld implements Disposable {
 			jumped = 0;
 		}
 		if (pos.x >= nextXPos) {
-			platforms.addNext();
+			platforms.addNextPlatform();
+			if (pos.x > 50)
+				platforms.removeFirstPlatform();
 			nextXPos += Constants.DISTANCE_BETWEEN;
 		}
 		if (pos.y <= 0) {

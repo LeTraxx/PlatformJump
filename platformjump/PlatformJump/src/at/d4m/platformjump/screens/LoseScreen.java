@@ -15,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class LoseScreen implements Screen {
 
+	@SuppressWarnings("unused")
+	// used in click listener from start new button
 	private final PhysicsTest game;
-	// private final int score;
 
 	private Stage stage;
 	private Skin defaultSkin;
 
 	public LoseScreen(final PhysicsTest game, final int score) {
 		this.game = game;
-		// this.score = score;
 
 		defaultSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
@@ -36,20 +36,31 @@ public class LoseScreen implements Screen {
 		Label lab = new Label("Lose!\nPunkte: " + score, defaultSkin);
 		table.add(lab);
 
-		TextButton testButton = new TextButton("Neu Starten", defaultSkin);
-		table.add(testButton);
+		TextButton startNewButton = new TextButton("Try Again", defaultSkin);
+		table.add(startNewButton);
 
-		testButton.addListener(new ChangeListener() {
+		startNewButton.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				dispose();
-				game.setScreen(new GameScreen(game));	
+				game.setScreen(new GameScreen(game));
 			}
 
 		});
 
-		
+		TextButton toMenuButton = new TextButton("Menu", defaultSkin);
+		table.add(toMenuButton);
+
+		toMenuButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(new MenuScreen(game));
+				dispose();
+			}
+
+		});
 	}
 
 	@Override
@@ -57,11 +68,11 @@ public class LoseScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		Gdx.input.setInputProcessor(stage);
-		
+
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 
-		//Table.drawDebug(stage);
+		// Table.drawDebug(stage);
 
 	}
 

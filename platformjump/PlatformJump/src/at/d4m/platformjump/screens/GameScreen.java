@@ -1,7 +1,8 @@
 package at.d4m.platformjump.screens;
 
+import at.d4m.platformjump.Constants;
 import at.d4m.platformjump.PhysicsTest;
-import at.d4m.platformjump.renderer.DebugRenderer;
+import at.d4m.platformjump.renderer.GameRenderer;
 import at.d4m.platformjump.renderer.Renderer;
 import at.d4m.platformjump.world.PhysicsWorld;
 
@@ -23,11 +24,11 @@ public class GameScreen implements Screen {
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 96, 54);
+		camera.setToOrtho(false, 16 * 6, 9 * 6);
 
 		world = new PhysicsWorld();
 
-		renderer = new DebugRenderer();
+		renderer = new GameRenderer();
 	}
 
 	@Override
@@ -36,11 +37,11 @@ public class GameScreen implements Screen {
 
 		Vector2 pos = world.getBobPosition();
 
-		camera.position.x = pos.x + 25;
+		camera.position.x = pos.x + Constants.BOB_OFFSET_FROM_LEFT;
 
 		camera.update();
 
-		renderer.render(world.getWorld(), camera.combined);
+		renderer.render(world, camera.combined);
 
 		world.process();
 

@@ -25,13 +25,16 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 96, 54);
 
-		world = new PhysicsWorld(new PhysicsWorld.PhysicsWorldEventListener() {
-			
+		world = new PhysicsWorld();
+
+		world.addListener(new PhysicsWorld.PhysicsWorldEventListener() {
+
 			@Override
 			public void onLose() {
 				world.dispose();
-				world = new PhysicsWorld(this);
-				
+				world = new PhysicsWorld();
+				world.addListener(this);
+
 			}
 		});
 
@@ -41,7 +44,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		Vector2 pos = world.getBobPosition();
 
 		camera.position.x = pos.x + 25;
@@ -50,7 +53,7 @@ public class GameScreen implements Screen {
 		camera.update();
 
 		renderer.render(world.getWorld(), camera.combined);
-		
+
 		world.processInput();
 
 		world.stepPhysics();

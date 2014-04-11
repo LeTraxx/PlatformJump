@@ -1,62 +1,42 @@
 package at.d4m.platformjump.screens;
 
 import at.d4m.platformjump.PhysicsTest;
-import at.d4m.platformjump.renderer.DebugRenderer;
-import at.d4m.platformjump.renderer.Renderer;
-import at.d4m.platformjump.world.PhysicsWorld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 
-public class GameScreen implements Screen {
+public class MenuScreen implements Screen {
 
-	PhysicsTest game;
-	PhysicsWorld world;
+	final PhysicsTest game;
 
-	Renderer renderer;
-	OrthographicCamera camera;
+	private OrthographicCamera camera;
 
-	public GameScreen(final PhysicsTest game) {
-		this.game = game;
+	public MenuScreen(final PhysicsTest rain) {
+		this.game = rain;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 96, 54);
-
-		world = new PhysicsWorld();
-
-		renderer = new DebugRenderer();
+		camera.setToOrtho(false, 800, 480);
 	}
 
 	@Override
 	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		Vector2 pos = world.getBobPosition();
-
-		camera.position.x = pos.x + 25;
 
 		camera.update();
 
-		renderer.render(world.getWorld(), camera.combined);
-
-		world.process();
-
-		world.stepPhysics();
-
-		if (world.isLost()) {
-			int score = (int) world.getBobPosition().x;
-			game.setScreen(new LoseScreen(game, score));
+		if (Gdx.input.isTouched()) {
+			game.setScreen(new GameScreen(game));
 			dispose();
 		}
 	}
 
 	@Override
 	public void dispose() {
-		world.dispose();
-		renderer.dispose();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

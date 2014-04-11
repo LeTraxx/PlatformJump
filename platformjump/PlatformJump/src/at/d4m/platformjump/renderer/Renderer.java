@@ -6,5 +6,6 @@ import com.badlogic.gdx.physics.box2d.World;
 public interface Renderer {
 
 	public void render(World world, Matrix4 projMatrix);
+	public void dispose();
 
 }

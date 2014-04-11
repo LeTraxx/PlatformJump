@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 public class PhysicsWorld implements Disposable {
@@ -18,14 +17,7 @@ public class PhysicsWorld implements Disposable {
 	private int jumped = 0;
 	private PlatformEngine platforms;
 	private int nextXPos = 0;
-
-	public World getWorld() {
-		return world;
-	}
-
-	public Vector2 getBobPosition() {
-		return bob.getPosition();
-	}
+	private boolean lost = false;
 
 	public PhysicsWorld() {
 		setup();
@@ -67,7 +59,7 @@ public class PhysicsWorld implements Disposable {
 		rect.dispose();
 	}
 
-	public void processInput() {
+	public void process() {
 		Vector2 pos = getBobPosition();
 		if (Gdx.input.isKeyPressed(Constants.JUMP_KEY) || Gdx.input.isTouched()) {
 			// bob.applyForceToCenter(0, 500, true);
@@ -87,13 +79,21 @@ public class PhysicsWorld implements Disposable {
 			nextXPos += Constants.DISTANCE_BETWEEN;
 		}
 		if (pos.y <= 0) {
-			fireLose();
+			lost = true;
 		}
 
 	}
 
 	public void stepPhysics() {
 		world.step(1 / 60f, 6, 2);
+	}
+
+	public World getWorld() {
+		return world;
+	}
+
+	public Vector2 getBobPosition() {
+		return bob.getPosition();
 	}
 
 	@Override
@@ -103,45 +103,7 @@ public class PhysicsWorld implements Disposable {
 
 	// EventListener Stuff
 
-	/**
-	 * Event Listener interface
-	 * 
-	 * @author Christoph
-	 * 
-	 */
-	public interface PhysicsWorldEventListener {
-		public void onLose();
+	public boolean isLost() {
+		return lost;
 	}
-
-	private Array<PhysicsWorldEventListener> eventListeners;
-
-	/**
-	 * Add a new event Listener
-	 * @param listener the EventListener
-	 */
-	public void addListener(PhysicsWorldEventListener listener) {
-		if (eventListeners == null)
-			eventListeners = new Array<PhysicsWorld.PhysicsWorldEventListener>();
-		
-		eventListeners.add(listener);
-	}
-
-	public void removeListener(PhysicsWorldEventListener listener) {
-		//remove event listener
-		if (eventListeners != null)
-			eventListeners.removeValue(listener, true);
-		
-		//if size is 0 remove reference and free space
-		if (eventListeners.size <= 0)
-			eventListeners = null;
-	}
-
-	private void fireLose() {
-		if (eventListeners != null) {
-			for (PhysicsWorldEventListener listener : eventListeners) {
-				listener.onLose();
-			}
-		}
-	}
-
 }

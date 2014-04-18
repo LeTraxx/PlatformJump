@@ -1,6 +1,7 @@
 package at.d4m.platformjump.screens;
 
 import at.d4m.platformjump.PhysicsTest;
+import at.d4m.platformjump.fontstexturesnstuff.Scene2dStyleManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -20,23 +20,20 @@ public class MenuScreen implements Screen {
 	// private OrthographicCamera camera;
 
 	private Stage stage;
-	private Skin defaultSkin;
 
 	public MenuScreen(final PhysicsTest rain) {
 		this.game = rain;
 		
-		defaultSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-
 		stage = new Stage();
 
 		Table table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		Label startGameLabel = new Label("PlatformJump",defaultSkin);
+		Label startGameLabel = new Label("PlatformJump", Scene2dStyleManager.getDeafaultLabelStyle());
 		table.add(startGameLabel);
 
-		TextButton testButton = new TextButton("Start Game", defaultSkin);
+		TextButton testButton = new TextButton("Start Game",  Scene2dStyleManager.getDefaultSkin());
 		table.add(testButton);
 
 		testButton.addListener(new ChangeListener() {
@@ -44,7 +41,7 @@ public class MenuScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				dispose();
-				game.setScreen(new GameScreen(game));	
+				game.setScreen(new GameScreen(game));
 			}
 
 		});
@@ -63,7 +60,6 @@ public class MenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		defaultSkin.dispose();
 	}
 
 	@Override

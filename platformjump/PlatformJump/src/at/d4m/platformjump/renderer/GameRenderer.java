@@ -1,5 +1,6 @@
 package at.d4m.platformjump.renderer;
 
+import at.d4m.platformjump.fontstexturesnstuff.FontManager;
 import at.d4m.platformjump.world.PhysicsWorld;
 
 import com.badlogic.gdx.Gdx;
@@ -19,24 +20,12 @@ public class GameRenderer extends Box2DDebugRenderer implements Renderer,
 		super();
 
 		batch = new SpriteBatch();
-		font = new BitmapFont();
-		// font.scale(-0.7f);
+		font = FontManager.getDefaultFont();
 	}
 
 	@Override
 	public void render(PhysicsWorld world, Matrix4 projMatrix) {
-
-		// batch.setProjectionMatrix();
-
-		// batch.set
-
 		batch.begin();
-
-		// font.draw(
-		// batch,
-		// "Score: " + (int) world.getBobPosition().x,
-		// (int) world.getBobPosition().x - Constants.BOB_OFFSET_FROM_LEFT,
-		// 54);
 
 		font.draw(batch, "Score: " + (int) world.getBobPosition().x, 0,
 				Gdx.graphics.getHeight());
@@ -48,7 +37,7 @@ public class GameRenderer extends Box2DDebugRenderer implements Renderer,
 
 	@Override
 	public void dispose() {
-		font.dispose();
+		//font is disposed by font manager
 		batch.dispose();
 
 		super.dispose();

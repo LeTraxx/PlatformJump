@@ -1,5 +1,7 @@
 package at.d4m.platformjump;
 
+import at.d4m.platformjump.fontstexturesnstuff.FontManager;
+import at.d4m.platformjump.fontstexturesnstuff.Scene2dStyleManager;
 import at.d4m.platformjump.screens.MenuScreen;
 
 import com.badlogic.gdx.Game;
@@ -13,14 +15,12 @@ public class PhysicsTest extends Game {
 
 	@Override
 	public void dispose() {
-
+		FontManager.dispose();
+		Scene2dStyleManager.dispose();
 	}
 
 	@Override
 	public void render() {
-		// Gdx.gl.glClearColor(1, 1, 1, 1);
-		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		super.render();
 	}
 

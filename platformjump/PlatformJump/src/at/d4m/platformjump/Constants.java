@@ -9,6 +9,8 @@ public final class Constants {
 	}
 
 	public static final int JUMP_KEY = Keys.SPACE;
+	public static final int LEFT_KEY = Keys.LEFT;
+	public static final int RIGHT_KEY = Keys.RIGHT;
 	public static final float PLATFORM_WIDTH = 10;
 	public static final float PLATFORM_BUFFER = 10;
 	public static final float PLATFORM_FILL_WHEN_BUFFER_EMPTY = 20;
@@ -22,5 +24,6 @@ public final class Constants {
 	public static final float MAX_HEIGHT = 19f;
 	public static final float MIN_HEIGHT = 11f;
 	public static final int BOB_OFFSET_FROM_LEFT = 25;
+	public static final int MOVE_SPEED = 250;
 
 }

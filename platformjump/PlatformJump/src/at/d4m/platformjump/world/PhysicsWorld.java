@@ -1,8 +1,10 @@
 package at.d4m.platformjump.world;
 
 import at.d4m.platformjump.Constants;
-
+import java.util.HashMap;
+import java.util.Map;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
-public class PhysicsWorld implements Disposable {
+public class PhysicsWorld implements Disposable, InputProcessor {
 
 	private World world;
 	private Body bob;
@@ -23,7 +25,35 @@ public class PhysicsWorld implements Disposable {
 
 	public PhysicsWorld() {
 		setup();
+		Gdx.input.setInputProcessor(this);
 	}
+
+	enum Keys {
+		LEFT, RIGHT, JUMP
+	}
+
+	public static Map<Keys, Boolean> keys = new HashMap<PhysicsWorld.Keys, Boolean>();
+	static {
+		keys.put(Keys.LEFT, false);
+		keys.put(Keys.RIGHT, false);
+		keys.put(Keys.JUMP, false);
+	};
+
+	public World getWorld() {
+		return world;
+	}
+
+	public Vector2 getBobPosition() {
+		return bob.getPosition();
+	}
+
+	// public PhysicsWorld(PhysicsWorldEventListener listener) {
+	// this();
+	//
+	//
+	// this.listener = listener;
+	//
+	// }
 
 	private void setup() {
 		world = new World(new Vector2(0, Constants.GRAVITY), true);
@@ -63,7 +93,7 @@ public class PhysicsWorld implements Disposable {
 
 	public void process() {
 		Vector2 pos = getBobPosition();
-		if (Gdx.input.isKeyPressed(Constants.JUMP_KEY) || Gdx.input.isTouched()) {
+		if (keys.get(Keys.JUMP)) {
 			// bob.applyForceToCenter(0, 500, true);
 			if (jumped <= Constants.MAX_JUMP) {
 				bob.applyLinearImpulse(Constants.JUMP_FORCE,
@@ -72,6 +102,12 @@ public class PhysicsWorld implements Disposable {
 						pos.x, pos.y, true);
 				jumped++;
 			}
+		}
+		if (keys.get(Keys.LEFT) && jumped == 0) {
+			bob.applyLinearImpulse(-Constants.MOVE_SPEED, 0, pos.x, pos.y, true);
+		}
+		if (keys.get(Keys.RIGHT) && jumped == 0) {
+			bob.applyLinearImpulse(Constants.MOVE_SPEED, 0, pos.x, pos.y, true);
 		}
 		if (bob.getLinearVelocity().equals(Vector2.Zero)) {
 			jumped = 0;
@@ -92,14 +128,6 @@ public class PhysicsWorld implements Disposable {
 		world.step(1 / 60f, 6, 2);
 	}
 
-	public World getWorld() {
-		return world;
-	}
-
-	public Vector2 getBobPosition() {
-		return bob.getPosition();
-	}
-
 	@Override
 	public void dispose() {
 		world.dispose();
@@ -109,5 +137,87 @@ public class PhysicsWorld implements Disposable {
 
 	public boolean isLost() {
 		return lost;
+	}
+
+	// Input Processor Methods
+
+	@Override
+	public boolean keyDown(int keycode) {
+		if (keycode == Constants.JUMP_KEY) {
+			keys.get(keys.put(Keys.JUMP, true));
+		}
+		if (keycode == Constants.LEFT_KEY) {
+			keys.get(keys.put(Keys.LEFT, true));
+		}
+		if (keycode == Constants.RIGHT_KEY) {
+			keys.get(keys.put(Keys.RIGHT, true));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		if (keycode == Constants.JUMP_KEY) {
+			keys.get(keys.put(Keys.JUMP, false));
+		}
+		if (keycode == Constants.LEFT_KEY) {
+			keys.get(keys.put(Keys.LEFT, false));
+		}
+		if (keycode == Constants.RIGHT_KEY) {
+			keys.get(keys.put(Keys.RIGHT, false));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if (screenX < Gdx.graphics.getWidth() / 4
+				&& screenY > (Gdx.graphics.getHeight() / 4) * 3) {
+			keys.get(keys.put(Keys.LEFT, true));
+		} else if (screenX > (Gdx.graphics.getWidth() / 4) * 3
+				&& screenY > (Gdx.graphics.getHeight() / 4) * 3) {
+			keys.get(keys.put(Keys.RIGHT, true));
+		} else {
+			keys.get(keys.put(Keys.JUMP, true));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (screenX < Gdx.graphics.getWidth() / 4
+				&& screenY > (Gdx.graphics.getHeight() / 4) * 3) {
+			keys.get(keys.put(Keys.LEFT, false));
+		} else if (screenX > (Gdx.graphics.getWidth() / 4) * 3
+				&& screenY > (Gdx.graphics.getHeight() / 4) * 3) {
+			keys.get(keys.put(Keys.RIGHT, false));
+		} else {
+			keys.get(keys.put(Keys.JUMP, false));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
